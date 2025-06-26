@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Crear nuevo tablero - TaskBoard</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo-area">
+        <h1>TaskBoard 🧩</h1>
+        <p class="slogan">Configura tu primer tablero de trabajo</p>
+      </div>
+    </header>
+
+    <main class="box-style">
+      <h2 style="color: #df388d; text-align: center">Nuevo tablero</h2>
+
+      <form id="tablero-form">
+        <div class="form-group">
+          <label for="cantidad">¿Cuántas listas quieres crear?</label>
+          <select id="cantidad" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option value="3">3 listas</option>
+            <option value="4">4 listas</option>
+            <option value="5">5 listas</option>
+            <option value="6">6 listas</option>
+            <option value="7">7 listas</option>
+          </select>
+        </div>
+
+        <div id="nombres-listas" class="form-group"></div>
+
+        <div class="form-button" style="text-align: center">
+          <button type="submit" class="btn-buscar">Crear tablero</button>
+        </div>
+      </form>
+    </main>
+
+    <footer>
+      <p>Privacy | Terms & Conditions | ©2025 TaskBoard</p>
+    </footer>
+
+    <script>
+      const selectCantidad = document.getElementById("cantidad");
+      const contenedorListas = document.getElementById("nombres-listas");
+
+      const nombresDefecto = {
+        3: ["To Do", "In Progress", "Done"],
+        4: ["To Do", "In Progress", "Backlog", "Done"],
+        5: ["Backlog", "To Do", "In Progress", "Review", "Done"],
+        6: ["Backlog", "To Do", "In Progress", "Blocked", "Review", "Done"],
+        7: [
+          "Backlog",
+          "To Do",
+          "In Progress",
+          "Blocked",
+          "Review",
+          "Done",
+          "Archive",
+        ],
+      };
+
+      selectCantidad.addEventListener("change", function () {
+        const num = parseInt(this.value);
+        contenedorListas.innerHTML = "";
+
+        for (let i = 0; i < num; i++) {
+          const label = document.createElement("label");
+          label.textContent = `Nombre de lista ${i + 1}:`;
+          const input = document.createElement("input");
+          input.type = "text";
+          input.placeholder = nombresDefecto[num][i];
+          input.name = `lista-${i}`;
+          input.classList.add("lista-input");
+          input.style.marginBottom = "10px";
+          contenedorListas.appendChild(label);
+          contenedorListas.appendChild(input);
+        }
+      });
+
+      document
+        .getElementById("tablero-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const cantidad = parseInt(selectCantidad.value);
+          const inputs = document.querySelectorAll(".lista-input");
+
+          const nombresFinales = [];
+
+          inputs.forEach((input, i) => {
+            const valor = input.value.trim();
+            nombresFinales.push(valor || nombresDefecto[cantidad][i]);
+          });
+
+          // Guardar temporalmente en localStorage (simulación)
+          localStorage.setItem("listas", JSON.stringify(nombresFinales));
+
+          // Redirigir al tablero
+          window.location.href = "admin_tareas.html";
+        });
+    </script>
+  </body>
+</html>

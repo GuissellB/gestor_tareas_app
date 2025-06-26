@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Iniciar sesión - TaskBoard</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo-area">
+        <h1>TaskBoard 🔐</h1>
+        <p class="slogan">Bienvenido, inicia sesión para continuar</p>
+      </div>
+    </header>
+
+    <main class="login-container">
+      <div class="login-box">
+        <h2>Iniciar sesión</h2>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label for="usuario">Usuario:</label>
+            <input
+              type="text"
+              id="usuario"
+              name="usuario"
+              required
+              placeholder="ej. maria123"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="clave">Contraseña:</label>
+            <input
+              type="password"
+              id="clave"
+              name="clave"
+              required
+              placeholder="********"
+            />
+          </div>
+
+          <div class="form-button">
+            <button type="submit" class="btn-buscar">Entrar</button>
+            <p style="margin-top: 15px">
+              ¿No tienes cuenta?
+              <a href="registro.html" style="color: #df388d; font-weight: bold"
+                >Regístrate</a
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      <p>Privacy | Terms & Conditions | ©2025 TaskBoard</p>
+    </footer>
+
+    <script>
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const usuario = document.getElementById("usuario").value.trim();
+          const clave = document.getElementById("clave").value.trim();
+
+          // Simulación de validación local
+          if (usuario === "admin" && clave === "1234") {
+            window.location.href = "admin_tareas.html";
+          } else if (usuario === "nuevo" && clave === "1234") {
+            window.location.href = "new_tablero.html";
+          } else {
+            alert("Credenciales incorrectas. Inténtalo de nuevo.");
+          }
+        });
+    </script>
+  </body>
+</html>

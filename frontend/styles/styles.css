@@ -1,0 +1,316 @@
+/* === Estilo base y fondo === */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: url("../assets/dark-blue-color-background.jpg") no-repeat center
+    center fixed;
+  background-size: cover;
+  color: #333;
+}
+
+/* === Contenedor adaptable === */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+
+/* === Encabezado === */
+.header {
+  background-color: #df388d;
+  color: #fff;
+  padding: 10px 20px;
+}
+.logo-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 60px;
+  padding-left: 20px;
+}
+.logo-area h1 {
+  margin: 0;
+}
+.logo-area .slogan {
+  margin: 2px 0 0;
+  font-size: 0.9em;
+}
+
+nav {
+  margin-top: 0;
+  padding-left: 0;
+}
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: flex-start;
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+}
+nav li a {
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+nav li a:hover {
+  text-decoration: underline;
+}
+
+/* === Reutilizable contenedor blanco === */
+.box-style {
+  background-color: rgba(255, 255, 255, 0.95);
+  margin: 30px auto;
+  padding: 30px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+/* === Estilos para login === */
+.login-container {
+  height: calc(100vh - 120px); /* ajusta considerando el header y footer */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.login-box h2 {
+  color: #df388d;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form-button {
+  text-align: center;
+}
+
+/* === Tablero horizontal tipo Trello === */
+.tablero-horizontal {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+}
+.lista {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 10px;
+  width: 300px;
+  min-width: 280px;
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.lista h3 {
+  margin-bottom: 15px;
+  color: #df388d;
+  text-align: center;
+}
+
+/* === Tarjetas === */
+.tarea {
+  background-color: white;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: grab;
+  transition: background-color 0.2s;
+}
+.tarea:hover {
+  background-color: #f9f1f7;
+}
+.titulo-tarea {
+  font-weight: bold;
+  color: #333;
+  margin: 8px 0 5px;
+}
+
+/* === Etiquetas === */
+.etiquetas {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.etiqueta {
+  font-size: 0.75em;
+  font-weight: bold;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 5px;
+}
+.etiqueta.marketing {
+  background-color: #ffc107;
+  color: #222;
+}
+.etiqueta.legal {
+  background-color: #28a745;
+}
+.etiqueta.design {
+  background-color: #6f42c1;
+}
+.etiqueta.external {
+  background-color: #fd7e14;
+}
+.etiqueta.production {
+  background-color: #e83e8c;
+}
+.etiqueta.sales {
+  background-color: #007bff;
+}
+
+/* === Info extra === */
+.detalles {
+  font-size: 0.75rem;
+  color: #666;
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+.asignado {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.asignado img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* === Botón para agregar tarjeta === */
+.add-card {
+  display: block;
+  font-size: 0.85rem;
+  color: #df388d;
+  text-decoration: none;
+  margin-top: 10px;
+  text-align: center;
+}
+.add-card:hover {
+  text-decoration: underline;
+}
+
+/* === Botones reutilizables === */
+a.btn-buscar,
+a.btn-volver,
+button.btn-buscar {
+  display: inline-block;
+  padding: 12px 20px;
+  background-color: #df388d;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+button.btn-buscar:hover {
+  background-color: #c02e78;
+}
+
+/* === Footer === */
+footer {
+  width: 100%;
+  background-color: #222;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* === Scroll horizontal visible (opcional) === */
+.tablero-horizontal::-webkit-scrollbar {
+  height: 8px;
+}
+.tablero-horizontal::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+/* === Estilos para crear tablero === */
+#tablero-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#tablero-form label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+#tablero-form select,
+#tablero-form input[type="text"] {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: border-color 0.3s;
+}
+
+#tablero-form select:focus,
+#tablero-form input[type="text"]:focus {
+  border-color: #df388d;
+  outline: none;
+}
+
+.lista-input {
+  margin-bottom: 15px;
+}
+
+#nombres-listas {
+  margin-top: 15px;
+}
+
+.form-button {
+  margin-top: 30px;
+}
+
+.form-button button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+}

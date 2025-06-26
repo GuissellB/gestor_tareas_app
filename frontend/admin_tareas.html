@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Administrador de Tareas</title>
+    <link rel="stylesheet" href="styles/styles.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="logo-area">
+        <div>
+          <h1>TaskBoard 🗂️</h1>
+          <p class="slogan">Convierte tus ideas en acción.</p>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="crear_tarea.html">Nueva tarea</a></li>
+            <li><a href="#">Tableros</a></li>
+            <li><a href="#">Mi cuenta</a></li>
+            <li><a href="#">Ayuda</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="box-style">
+      <h2 id="titulo-tablero">Tablero de Proyecto</h2>
+
+      <div class="tablero-horizontal" id="tablero-dinamico">
+        <!-- Se generarán dinámicamente las listas -->
+      </div>
+
+      <div style="text-align: center; margin-top: 20px">
+        <button id="btn-generar-tareas" class="btn-buscar">
+          Generar tareas de ejemplo
+        </button>
+      </div>
+    </main>
+
+    <footer>
+      <p>Privacy | Terms & Conditions | ©2025 TaskBoard</p>
+    </footer>
+
+    <script src="scripts/app.js"></script>
+    <script>
+      const contenedorTablero = document.getElementById("tablero-dinamico");
+      const listasGuardadas = JSON.parse(localStorage.getItem("listas")) || [];
+
+      if (listasGuardadas.length === 0) {
+        const mensaje = document.createElement("p");
+        mensaje.textContent = "No hay listas disponibles. Redirigiendo...";
+        contenedorTablero.appendChild(mensaje);
+        setTimeout(() => {
+          window.location.href = "new_tablero.html";
+        }, 2000);
+      }
+
+      // Crear dinámicamente las listas
+      listasGuardadas.forEach((nombreLista, index) => {
+        const section = document.createElement("section");
+        section.classList.add("lista");
+        section.setAttribute("data-index", index);
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = nombreLista;
+        section.appendChild(titulo);
+
+        contenedorTablero.appendChild(section);
+      });
+
+      // Botón para generar tareas por defecto
+      document
+        .getElementById("btn-generar-tareas")
+        .addEventListener("click", () => {
+          const primeraLista = document.querySelector(".lista");
+
+          if (!primeraLista) return;
+
+          const tareas = [
+            "Definir objetivo del tablero",
+            "Agregar colaboradores",
+            "Escribir primera tarea",
+          ];
+
+          tareas.forEach((titulo) => {
+            const tarea = document.createElement("div");
+            tarea.classList.add("tarea");
+            tarea.setAttribute("draggable", "true");
+
+            const p = document.createElement("p");
+            p.classList.add("titulo-tarea");
+            p.textContent = titulo;
+
+            tarea.appendChild(p);
+            primeraLista.appendChild(tarea);
+          });
+
+          // Desactivar el botón después de usarlo
+          const btn = document.getElementById("btn-generar-tareas");
+          btn.disabled = true;
+          btn.textContent = "Tareas generadas";
+        });
+    </script>
+  </body>
+</html>
