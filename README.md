@@ -32,7 +32,7 @@ Antes de comenzar, asegúrate de tener instalado:
 
 - Python 3.10+
 - Git
-- MySQL Server (y una base de datos llamada `gestor_tareas_app` ya creada)
+- MyMySQL (y una base de datos llamada `gestor_tareas_app` ya creada)
 
 ---
 
@@ -145,6 +145,6 @@ Si vas a colaborar:
 
 ---
 
-## 🧑‍💻 Equipo
+## 🧑‍💻 Autor
 
-- Dinamita
+- Guissell Betancur y equipo
