@@ -19,5 +19,5 @@ app.add_middleware(
 
 #app.include_router(usuarios_router.router)
 app.include_router(tableros_router.router)
-#app.include_router(lista_router.router)
+app.include_router(lista_router.router)
 app.include_router(tareas_router.router)
