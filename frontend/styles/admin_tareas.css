@@ -1,0 +1,195 @@
+.tablero-header {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: flex-start; 
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.kanban-column {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  padding: 1rem;
+  width: 300px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  /*align-items: stretch;*/
+  transition: transform 0.2s ease;
+}
+
+.kanban-column:hover {
+  transform: translateY(-4px);
+}
+.kanban-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kanban-column-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #333;
+  display: flex;
+  gap: 25px;
+
+}
+
+.header-dot {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.task-count {
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.task-list.empty {
+  padding: 1rem;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  color: #777;
+  text-align: center;
+  background-color: #fafafa;
+  /*margin-top: auto;*/
+}
+
+/* ✅ Solo aplicamos estilos al botón sin afectar layout */
+.add-task-btn {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  transition: background 0.3s ease;
+}
+
+.add-task-btn:hover {
+  background: linear-gradient(to right, #5b0eb5, #1e63e9);
+}
+
+.status-dot {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 100%;
+}
+
+.status-dot.dot-yellow {
+    background-color: yellow;
+}
+/* === Tarjetas de tarea === */
+.tarea {
+  background-color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+  cursor: grab;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tarea:hover {
+  transform: translateY(-2px);
+  background-color: #f9f9f9;
+}
+
+.titulo-tarea {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.descripcion-tarea {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+}
+.etiqueta.alta {
+  background-color: #dc3545; /* rojo */
+  color: white;
+}
+
+.etiqueta.media {
+  background-color: #ffc107; /* amarillo */
+  color: #222;
+  
+}
+
+.etiqueta.baja {
+  background-color: #28a745; /* verde */
+  color: white;
+}
+
+.mover-tarea {
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.85rem;
+}
+
+/* estilos botonos de modificar*/
+.titulo-tarea {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.acciones-tarea button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  font-size: 1rem;
+}
+
+.acciones-tarea button i {
+  color: #333;
+}
+
+.acciones-tarea button:hover i {
+  color: #000;
+}
+
+.btn-eliminar-tarea i {
+  color: #e74c3c;
+}
+
+.btn-editar-tarea i {
+  color: #2c3e50;
+}

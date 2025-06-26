@@ -43,10 +43,7 @@ def obtener_tareas_por_lista(id_lista: str):
         db = conectar_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM tareas WHERE id_lista = %s", (id_lista,))
-        tareas = cursor.fetchall()
-
-        if not tareas:
-            raise HTTPException(status_code=404, detail="No se encontraron tareas para esa lista")
+        tareas = cursor.fetchall()   
 
         return tareas
 
