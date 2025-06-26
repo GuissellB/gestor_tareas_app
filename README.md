@@ -75,8 +75,15 @@ venv\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
+### 6. crear base de datos
 
-### 6. Ejecutar la API
+```bash
+CREATE DATABASE IF NOT EXISTS gestor_tareas_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE gestor_tareas_app;
+y ejecutar los query de SQL en el orden que se menciona en el aparatado de base de datos 
+
+```
+### 7. Ejecutar la API
 
 ```bash
 uvicorn main:app --reload
