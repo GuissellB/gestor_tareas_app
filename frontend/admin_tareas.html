@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="./styles/layout.css" />
   <link rel="stylesheet" href="./styles/admin_tareas.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 
 <body>
@@ -44,6 +43,7 @@
 
   <script src="admin_tareas.js"></script>
 
+  <!-- Modal para crear tarea -->
   <div id="modalCrearTarea" class="modal hidden">
     <div class="modal-content">
       <span id="cerrarModal" class="close-button">&times;</span>
@@ -57,6 +57,24 @@
           <option value="Alta">Alta</option>
         </select>
         <button type="submit">Crear Tarea</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal para editar tarea -->
+  <div id="modalEditarTarea" class="modal hidden">
+    <div class="modal-content">
+      <span id="cerrarModalEditar" class="close-button">&times;</span>
+      <h2>Editar Tarea</h2>
+      <form id="formEditarTarea">
+        <input type="text" id="editarTitulo" placeholder="Título" required />
+        <textarea id="editarDescripcion" placeholder="Descripción"></textarea>
+        <select id="editarPrioridad" required>
+          <option value="Baja">Baja</option>
+          <option value="Media">Media</option>
+          <option value="Alta">Alta</option>
+        </select>
+        <button type="submit">Guardar Cambios</button>
       </form>
     </div>
   </div>
