@@ -131,6 +131,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+document.addEventListener("click", async function (e) {
+  if (e.target.closest(".btn-eliminar-tarea")) {
+    const boton = e.target.closest(".btn-eliminar-tarea");
+    const idTarea = boton.getAttribute("data-id");
+
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar esta tarea?");
+    if (!confirmar) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/tareas/eliminar/${idTarea}`, {
+        method: "DELETE"
+      });
+
+      if (!res.ok) throw new Error("Error al eliminar la tarea");
+
+      alert("✅ Tarea eliminada con éxito");
+      location.reload(); // o volver a renderizar las listas
+    } catch (error) {
+      console.error(error);
+      alert("❌ No se pudo eliminar la tarea");
+    }
+  }
+});
+
 
 async function getTablero(id) {
   const res = await fetch(`${API_BASE_URL}/tableros/${id}`);
