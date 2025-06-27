@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Mostrar el modal al hacer clic en "+ Add Task"
     document.addEventListener("click", function (e) {
       if (e.target && e.target.classList.contains("add-task-btn")) {
+        idListaSeleccionada = e.target.value;
         document.getElementById("modalCrearTarea").classList.remove("hidden");
       }
     });
@@ -30,21 +31,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         descripcion: document.getElementById("descripcion").value,
         prioridad: document.getElementById("prioridad").value,
         fecha_limite: new Date().toISOString().split('T')[0], // puedes cambiar esto si el campo se agrega
-        id_lista: null
+        id_lista: idListaSeleccionada, 
       };
 
-      const listas = await getListas(tableroId);
-      if (listas.length > 0) {
-        const listaId = listas[0].id;
-        nuevaTarea.id_lista = listaId;
-
-        // Obtener tareas existentes para esa lista y calcular posición
-        const tareas = await getTareasPorLista(listaId);
-        nuevaTarea.posicion = tareas.length + 1;
-      } else {
-        alert("No hay listas disponibles.");
+      if (!idListaSeleccionada) {
+        alert("No se seleccionó una lista.");
         return;
       }
+
+      const tareas = await getTareasPorLista(idListaSeleccionada);
+      nuevaTarea.posicion = tareas.length + 1;
 
       try {
         const res = await fetch(`${API_BASE_URL}/tareas/crear`, {
@@ -200,7 +196,7 @@ async function renderListasKanban(listas) {
         </div>
       `;
     }
-
+    /*Boton de agregar tareas*/
     listaHTML.innerHTML = `
       <div class="kanban-column-header">
         <div class = header-dot>
@@ -209,7 +205,7 @@ async function renderListasKanban(listas) {
         </div>
         <label class="task-count">${tareas.length}</label>  
       </div>
-      <button class="add-task-btn">+ Add Task</button>
+      <button class="add-task-btn" value="${lista.id}">+ Add Task</button>
       ${tareasHTML}
     `;
 
