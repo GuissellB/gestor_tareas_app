@@ -9,6 +9,59 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const listas = await getListas(tableroId);
     renderListasKanban(listas);
+    // Mostrar el modal al hacer clic en "+ Add Task"
+    document.addEventListener("click", function (e) {
+      if (e.target && e.target.classList.contains("add-task-btn")) {
+        document.getElementById("modalCrearTarea").classList.remove("hidden");
+      }
+    });
+
+    // Cerrar el modal
+    document.getElementById("cerrarModal").addEventListener("click", function () {
+      document.getElementById("modalCrearTarea").classList.add("hidden");
+    });
+
+    // Enviar formulario
+    document.getElementById("formCrearTarea").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const nuevaTarea = {
+        titulo: document.getElementById("titulo").value,
+        descripcion: document.getElementById("descripcion").value,
+        prioridad: document.getElementById("prioridad").value,
+        fecha_limite: new Date().toISOString().split('T')[0], // puedes cambiar esto si el campo se agrega
+        id_lista: null
+      };
+
+      const listas = await getListas(tableroId);
+      if (listas.length > 0) {
+        const listaId = listas[0].id;
+        nuevaTarea.id_lista = listaId;
+
+        // Obtener tareas existentes para esa lista y calcular posición
+        const tareas = await getTareasPorLista(listaId);
+        nuevaTarea.posicion = tareas.length + 1;
+      } else {
+        alert("No hay listas disponibles.");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/tareas/crear`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevaTarea)
+        });
+
+        if (!res.ok) throw new Error("Error al crear tarea");
+        alert("✅ Tarea creada");
+        document.getElementById("modalCrearTarea").classList.add("hidden");
+        location.reload();
+      } catch (error) {
+        console.error(error);
+        alert("❌ Error al crear la tarea");
+      }
+    });
   } catch (error) {
     console.error("Error cargando el tablero o listas:", error);
   }
@@ -58,8 +111,8 @@ async function renderListasKanban(listas) {
       tareasHTML = `
         <div class="task-list">
           ${tareas
-            .map(
-              (t) => `
+          .map(
+            (t) => `
             <div class="tarea">
               <div class="titulo-tarea">
                 <span>${t.titulo}</span>
@@ -79,8 +132,8 @@ async function renderListasKanban(listas) {
               </select>
             </div>
           `
-            )
-            .join("")}
+          )
+          .join("")}
         </div>
       `;
     }
@@ -108,3 +161,5 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
+
+

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tablero de Proyecto</title>
   <link rel="stylesheet" href="./styles/layout.css" />
   <link rel="stylesheet" href="./styles/admin_tareas.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
+
 <body>
   <header class="gradient-header">
     <div class="nav-container">
@@ -34,7 +36,6 @@
       <p id="tablero-descripcion"></p>
     </div>
     <div class="kanban-board" id="listas-container"></div>
-    
   </main>
 
   <footer class="gradient-footer">
@@ -42,5 +43,24 @@
   </footer>
 
   <script src="admin_tareas.js"></script>
+
+  <div id="modalCrearTarea" class="modal hidden">
+    <div class="modal-content">
+      <span id="cerrarModal" class="close-button">&times;</span>
+      <h2>Crear Nueva Tarea</h2>
+      <form id="formCrearTarea">
+        <input type="text" id="titulo" placeholder="Título de la tarea" required />
+        <textarea id="descripcion" placeholder="Descripción (opcional)"></textarea>
+        <select id="prioridad" required>
+          <option value="Baja">Baja</option>
+          <option value="Media">Media</option>
+          <option value="Alta">Alta</option>
+        </select>
+        <button type="submit">Crear Tarea</button>
+      </form>
+    </div>
+  </div>
+
 </body>
+
 </html>
