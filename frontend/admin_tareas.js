@@ -67,6 +67,69 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
+// Código para EDITAR tareas
+const modalEditar = document.getElementById("modalEditarTarea");
+const btnCerrarEditar = document.getElementById("cerrarModalEditar");
+const formEditar = document.getElementById("formEditarTarea");
+let tareaEditandoId = null;
+
+// Cerrar modal editar
+btnCerrarEditar.addEventListener("click", () => {
+  modalEditar.classList.add("hidden");
+});
+
+// Abrir modal editar al hacer click en botón editar de alguna tarea
+document.getElementById("listas-container").addEventListener("click", async (e) => {
+  if (e.target.closest(".btn-editar-tarea")) {
+    const btnEditar = e.target.closest(".btn-editar-tarea");
+    tareaEditandoId = btnEditar.getAttribute("data-id");
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`);
+      if (!res.ok) throw new Error("Error al obtener tarea");
+      const tarea = await res.json();
+
+      formEditar.editarTitulo.value = tarea.titulo;
+      formEditar.editarDescripcion.value = tarea.descripcion || "";
+      formEditar.editarPrioridad.value = tarea.prioridad;
+
+      modalEditar.classList.remove("hidden");
+    } catch (error) {
+      alert("Error al cargar datos de la tarea");
+      console.error(error);
+    }
+  }
+});
+
+// Enviar formulario editar
+formEditar.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!tareaEditandoId) return;
+
+  const datosActualizados = {
+    titulo: formEditar.editarTitulo.value,
+    descripcion: formEditar.editarDescripcion.value,
+    prioridad: formEditar.editarPrioridad.value,
+  };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(datosActualizados),
+    });
+
+    if (!res.ok) throw new Error("Error al actualizar tarea");
+
+    alert("✅ Tarea actualizada");
+    modalEditar.classList.add("hidden");
+    location.reload();
+  } catch (error) {
+    alert("❌ Error al actualizar la tarea");
+    console.error(error);
+  }
+});
+
 async function getTablero(id) {
   const res = await fetch(`${API_BASE_URL}/tableros/${id}`);
   if (!res.ok) throw new Error("No se pudo obtener el tablero");
