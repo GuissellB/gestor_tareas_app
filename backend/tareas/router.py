@@ -55,3 +55,29 @@ def obtener_tareas_por_lista(id_lista: str):
             cursor.close()
         if 'db' in locals():
             db.close()
+            
+#Eliminar tareas
+@router.delete("/eliminar/{id_tarea}")
+def eliminar_tarea(id_tarea: str):
+    try:
+        db = conectar_db()
+        cursor = db.cursor()
+
+        sql = "DELETE FROM tareas WHERE id = %s"
+        cursor.execute(sql, (id_tarea,))
+        db.commit()
+
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+        return {"mensaje": "Tarea eliminada con éxito"}
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'db' in locals():
+            db.close()
