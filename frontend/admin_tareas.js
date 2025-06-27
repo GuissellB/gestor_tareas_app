@@ -9,7 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const listas = await getListas(tableroId);
     renderListasKanban(listas);
-    // Mostrar el modal al hacer clic en "+ Add Task"
+
+    // ============ CREAR TAREA ============
+    let idListaSeleccionada = null;
+
+    // Mostrar modal al hacer clic en "+ Add Task"
     document.addEventListener("click", function (e) {
       if (e.target && e.target.classList.contains("add-task-btn")) {
         idListaSeleccionada = e.target.value;
@@ -17,12 +21,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Cerrar el modal
+    // Cerrar modal crear
     document.getElementById("cerrarModal").addEventListener("click", function () {
       document.getElementById("modalCrearTarea").classList.add("hidden");
     });
 
-    // Enviar formulario
+    // Enviar formulario crear
     document.getElementById("formCrearTarea").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -30,8 +34,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         titulo: document.getElementById("titulo").value,
         descripcion: document.getElementById("descripcion").value,
         prioridad: document.getElementById("prioridad").value,
-        fecha_limite: new Date().toISOString().split('T')[0], // puedes cambiar esto si el campo se agrega
-        id_lista: idListaSeleccionada, 
+        fecha_limite: new Date().toISOString().split('T')[0],
+        id_lista: idListaSeleccionada,
       };
 
       if (!idListaSeleccionada) {
@@ -58,73 +62,75 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert("❌ Error al crear la tarea");
       }
     });
+
+    // ============ MODIFICAR TAREA ============
+    const modalEditar = document.getElementById("modalEditarTarea");
+    const btnCerrarEditar = document.getElementById("cerrarModalEditar");
+    const formEditar = document.getElementById("formEditarTarea");
+    let tareaEditandoId = null;
+
+    // Cerrar modal editar
+    btnCerrarEditar.addEventListener("click", () => {
+      modalEditar.classList.add("hidden");
+    });
+
+    // Abrir modal editar al hacer clic en el botón editar
+    document.getElementById("listas-container").addEventListener("click", async (e) => {
+      if (e.target.closest(".btn-editar-tarea")) {
+        const btnEditar = e.target.closest(".btn-editar-tarea");
+        tareaEditandoId = btnEditar.getAttribute("data-id");
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`);
+          if (!res.ok) throw new Error("Error al obtener tarea");
+          const tarea = await res.json();
+
+          formEditar.editarTitulo.value = tarea.titulo;
+          formEditar.editarDescripcion.value = tarea.descripcion || "";
+          formEditar.editarPrioridad.value = tarea.prioridad;
+
+          modalEditar.classList.remove("hidden");
+        } catch (error) {
+          alert("Error al cargar datos de la tarea");
+          console.error(error);
+        }
+      }
+    });
+
+    // Enviar formulario editar
+    formEditar.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!tareaEditandoId) return;
+
+      const datosActualizados = {
+        titulo: formEditar.editarTitulo.value,
+        descripcion: formEditar.editarDescripcion.value,
+        prioridad: formEditar.editarPrioridad.value,
+      };
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datosActualizados),
+        });
+
+        if (!res.ok) throw new Error("Error al actualizar tarea");
+
+        alert("✅ Tarea actualizada");
+        modalEditar.classList.add("hidden");
+        location.reload();
+      } catch (error) {
+        alert("❌ Error al actualizar la tarea");
+        console.error(error);
+      }
+    });
+
   } catch (error) {
     console.error("Error cargando el tablero o listas:", error);
   }
 });
 
-// Código para EDITAR tareas
-const modalEditar = document.getElementById("modalEditarTarea");
-const btnCerrarEditar = document.getElementById("cerrarModalEditar");
-const formEditar = document.getElementById("formEditarTarea");
-let tareaEditandoId = null;
-
-// Cerrar modal editar
-btnCerrarEditar.addEventListener("click", () => {
-  modalEditar.classList.add("hidden");
-});
-
-// Abrir modal editar al hacer click en botón editar de alguna tarea
-document.getElementById("listas-container").addEventListener("click", async (e) => {
-  if (e.target.closest(".btn-editar-tarea")) {
-    const btnEditar = e.target.closest(".btn-editar-tarea");
-    tareaEditandoId = btnEditar.getAttribute("data-id");
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`);
-      if (!res.ok) throw new Error("Error al obtener tarea");
-      const tarea = await res.json();
-
-      formEditar.editarTitulo.value = tarea.titulo;
-      formEditar.editarDescripcion.value = tarea.descripcion || "";
-      formEditar.editarPrioridad.value = tarea.prioridad;
-
-      modalEditar.classList.remove("hidden");
-    } catch (error) {
-      alert("Error al cargar datos de la tarea");
-      console.error(error);
-    }
-  }
-});
-
-// Enviar formulario editar
-formEditar.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (!tareaEditandoId) return;
-
-  const datosActualizados = {
-    titulo: formEditar.editarTitulo.value,
-    descripcion: formEditar.editarDescripcion.value,
-    prioridad: formEditar.editarPrioridad.value,
-  };
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datosActualizados),
-    });
-
-    if (!res.ok) throw new Error("Error al actualizar tarea");
-
-    alert("✅ Tarea actualizada");
-    modalEditar.classList.add("hidden");
-    location.reload();
-  } catch (error) {
-    alert("❌ Error al actualizar la tarea");
-    console.error(error);
-  }
-});
 
 async function getTablero(id) {
   const res = await fetch(`${API_BASE_URL}/tableros/${id}`);
@@ -154,10 +160,8 @@ async function renderListasKanban(listas) {
     const listaHTML = document.createElement("div");
     listaHTML.className = "kanban-column";
 
-    // Obtener tareas de esta lista
     const tareas = await getTareasPorLista(lista.id);
 
-    // Contenedor de tareas
     let tareasHTML = "";
 
     if (tareas.length === 0) {
@@ -169,9 +173,7 @@ async function renderListasKanban(listas) {
     } else {
       tareasHTML = `
         <div class="task-list">
-          ${tareas
-          .map(
-            (t) => `
+          ${tareas.map(t => `
             <div class="tarea">
               <div class="titulo-tarea">
                 <span>${t.titulo}</span>
@@ -181,25 +183,21 @@ async function renderListasKanban(listas) {
                 </div>
               </div>
               <div class="etiquetas">
-                <span class="etiqueta ${t.prioridad.toLowerCase()}">
-                  ${t.prioridad}
-                </span>
+                <span class="etiqueta ${t.prioridad.toLowerCase()}">${t.prioridad}</span>
               </div>
               <p class="descripcion-tarea">${t.descripcion}</p>
               <select class="mover-tarea">
                 ${listas.map(l => `<option value="${l.id}" ${l.id === lista.id ? 'selected' : ''}>${l.nombre}</option>`).join("")}
               </select>
             </div>
-          `
-          )
-          .join("")}
+          `).join("")}
         </div>
       `;
     }
-    /*Boton de agregar tareas*/
+
     listaHTML.innerHTML = `
       <div class="kanban-column-header">
-        <div class = header-dot>
+        <div class="header-dot">
           <div class="status-dot ${getColorDot(lista.nombre)}"></div>
           <h3>${lista.nombre}</h3>
         </div>
@@ -213,12 +211,10 @@ async function renderListasKanban(listas) {
   }
 }
 
-
 function getColorDot(nombreLista) {
   const nombre = nombreLista.toLowerCase();
   if (nombre.includes("progreso")) return "dot-yellow";
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
-
 
