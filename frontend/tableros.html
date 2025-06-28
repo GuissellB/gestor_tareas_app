@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Tableros</title>
+  <link rel="stylesheet" href="styles/tableros.css" />
+  <link rel="stylesheet" href="./styles/layout.css" />
+  <script defer src="tableros.js"></script>
+</head>
+
+<body>
+  <header class="gradient-header">
+    <div class="nav-container">
+      <div class="branding">
+        <h1 class="logo">TaskBoard <span class="icon">📁</span></h1>
+        <p class="slogan">Convierte tus ideas en acción.</p>
+      </div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="/">Inicio</a></li>
+          <li><a href="#">Nueva tarea</a></li>
+          <li><a href="#">Tableros</a></li>
+          <li><a href="#">Mi cuenta</a></li>
+          <li><a href="#">Ayuda</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="tableros-main">
+    <h2 class="titulo-seccion">📄 Tableros disponibles</h2>
+    <div id="lista-tableros" class="tarjetas-tableros">
+      <!-- Las tarjetas de tableros se insertarán aquí dinámicamente -->
+    </div>
+  </main>
+
+  <footer class="gradient-footer">
+    Privacy | Terms & Conditions | ©2025 TaskBoard
+  </footer>
+</body>
+
+</html>

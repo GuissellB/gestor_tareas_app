@@ -1,0 +1,129 @@
+.tableros-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.tarjetas-tableros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.tarjeta-tablero {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tarjeta-tablero:hover {
+  transform: translateY(-5px);
+  background-color: #e9ecef;
+}
+
+.tarjeta-tablero h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.tarjeta-tablero p {
+  margin-top: 10px;
+  color: #666;
+  font-size: 0.95em;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f5f7;
+  margin: 0;
+  padding: 0;
+}
+
+header.main-header {
+  background: linear-gradient(to right, #005bea, #00c6fb);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .logo h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+header .logo p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+header .nav-links a {
+  margin-left: 1rem;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+header .nav-links a.activo {
+  text-decoration: underline;
+}
+
+.tableros-main {
+  max-width: 1100px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.titulo-seccion {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contenedor-tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.tarjeta-tablero {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  width: 260px;
+  transition: transform 0.2s;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tarjeta-tablero:hover {
+  transform: translateY(-5px);
+}
+
+.tarjeta-tablero h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.tarjeta-tablero p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+footer.main-footer {
+  text-align: center;
+  padding: 1.2rem;
+  margin-top: 2rem;
+  background: linear-gradient(to right, #005bea, #00c6fb);
+  color: white;
+  font-size: 0.9rem;
+}
