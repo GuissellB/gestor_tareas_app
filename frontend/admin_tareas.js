@@ -1,5 +1,7 @@
 const API_BASE_URL = "http://localhost:8000";
-const tableroId = "b53ce9a5-525c-11f0-b40f-00155d917c87"; // ID quemado por ahora
+const urlParams = new URLSearchParams(window.location.search);
+const tableroId = urlParams.get("id");
+console.log("ID del tablero:", tableroId);
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -13,15 +15,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ============ CREAR TAREA ============
     let idListaSeleccionada = null;
 
-    // Mostrar modal al hacer clic en "+ Add Task"
     document.addEventListener("click", function (e) {
       if (e.target && e.target.classList.contains("add-task-btn")) {
         idListaSeleccionada = e.target.value;
         document.getElementById("modalCrearTarea").classList.remove("hidden");
 
-        // Llenar el <select id="status"> con las listas del tablero
         const selectStatus = document.getElementById("status");
-        selectStatus.innerHTML = ""; // Limpiar opciones anteriores
+        selectStatus.innerHTML = "";
 
         listas.forEach(lista => {
           const option = document.createElement("option");
@@ -35,12 +35,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Cerrar modal crear
     document.getElementById("cerrarModal").addEventListener("click", function () {
       document.getElementById("modalCrearTarea").classList.add("hidden");
     });
 
-    // Enviar formulario crear
     document.getElementById("formCrearTarea").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -83,12 +81,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const formEditar = document.getElementById("formEditarTarea");
     let tareaEditandoId = null;
 
-    // Cerrar modal editar
     btnCerrarEditar.addEventListener("click", () => {
       modalEditar.classList.add("hidden");
     });
 
-    // Abrir modal editar al hacer clic en el botón editar
     document.getElementById("listas-container").addEventListener("click", async (e) => {
       if (e.target.closest(".btn-editar-tarea")) {
         const btnEditar = e.target.closest(".btn-editar-tarea");
@@ -111,7 +107,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // Enviar formulario editar
     formEditar.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!tareaEditandoId) return;
@@ -161,14 +156,13 @@ document.addEventListener("click", async function (e) {
       if (!res.ok) throw new Error("Error al eliminar la tarea");
 
       alert("✅ Tarea eliminada con éxito");
-      location.reload(); // o volver a renderizar las listas
+      location.reload();
     } catch (error) {
       console.error(error);
       alert("❌ No se pudo eliminar la tarea");
     }
   }
 });
-
 
 async function getTablero(id) {
   const res = await fetch(`${API_BASE_URL}/tableros/${id}`);
@@ -255,4 +249,3 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
-
