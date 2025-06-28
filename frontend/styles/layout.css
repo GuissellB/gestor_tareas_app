@@ -3,7 +3,7 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f5f7;
   color: #333;
-  
+  display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
@@ -39,7 +39,9 @@ body {
   margin: 0;
   opacity: 0.9;
 }
-.main{
+.admin-main{
+  display: flex;
+  flex-direction: column;
   flex: 1;
 }
 
@@ -65,7 +67,6 @@ body {
 .gradient-footer {
   background: linear-gradient(90deg, #0052cc, #2684ff);
   color: white;
-  margin-top: auto;
   text-align: center;
   padding: 1rem;
   font-size: 0.85rem;
