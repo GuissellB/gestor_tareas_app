@@ -1,6 +1,5 @@
 .tablero-header {
   text-align: center;
-  
 }
 
 .tablero-header p {
@@ -16,12 +15,11 @@
   flex: 1;
   display: flex;
   gap: 20px;
-  align-items: flex-start; 
+  align-items: flex-start;
   padding: 2rem;
   overflow-x: scroll;
   scrollbar-width: thin;
-  scrollbar-color: #2684ff #f4f5f7 ;
-  
+  scrollbar-color: #2684ff #f4f5f7;
 }
 
 .kanban-column {
@@ -52,13 +50,12 @@
   color: #333;
   display: flex;
   gap: 25px;
-
 }
 
 .header-dot {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .task-count {
@@ -73,10 +70,8 @@
   color: #777;
   text-align: center;
   background-color: #fafafa;
-  /*margin-top: auto;*/
 }
 
-/* ✅ Solo aplicamos estilos al botón sin afectar layout */
 .add-task-btn {
   background: linear-gradient(to right, #6a11cb, #2575fc);
   color: white;
@@ -94,18 +89,18 @@
 }
 
 .status-dot {
-    content: '';
-    display: block;
-    width: 10px;
-    height: 10px;
-    background-color: #333;
-    border-radius: 100%;
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 100%;
 }
 
 .status-dot.dot-yellow {
-    background-color: yellow;
+  background-color: yellow;
 }
-/* === Tarjetas de tarea === */
+
 .tarea {
   background-color: white;
   border-radius: 8px;
@@ -136,11 +131,11 @@
   color: #555;
   margin: 0;
   line-height: 1.4;
-  word-wrap: break-word;         /* Corta las palabras largas si es necesario */
-  overflow-wrap: break-word;     /* Compatibilidad extra */
-  white-space: normal;           /* Permite que el texto se acomode en varias líneas */
-  max-width: 100%;               /* Limita el ancho al 100% del contenedor padre */
-  font-size: 0.95rem; 
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  max-width: 100%;
+  font-size: 0.95rem;
 }
 
 .etiqueta {
@@ -154,18 +149,17 @@
   color: white;
 }
 .etiqueta.alta {
-  background-color: #dc3545; /* rojo */
+  background-color: #dc3545;
   color: white;
 }
 
 .etiqueta.media {
-  background-color: #ffc107; /* amarillo */
+  background-color: #ffc107;
   color: #222;
-  
 }
 
 .etiqueta.baja {
-  background-color: #28a745; /* verde */
+  background-color: #28a745;
   color: white;
 }
 
@@ -177,7 +171,6 @@
   font-size: 0.85rem;
 }
 
-/* estilos botonos de modificar*/
 .titulo-tarea {
   display: grid;
   grid-template-columns: auto 3.5rem;
@@ -187,7 +180,7 @@
 }
 
 .acciones-tarea {
-    display: flex;
+  display: flex;
 }
 
 .acciones-tarea button {
@@ -257,6 +250,7 @@
   padding: 0.5em;
   font-size: 1em;
 }
+
 .form-tarea {
   display: flex;
   flex-direction: column;
@@ -291,6 +285,7 @@
 .btn-primary:hover {
   background: linear-gradient(to right, #3f8efc, #4e54c8);
 }
+
 .styled-modal {
   width: 100%;
   max-width: 550px;
@@ -383,4 +378,11 @@
   box-sizing: border-box;
   font-family: inherit;
 }
+
+/* SOLO PARA DRAG & DROP */
+.tarea.dragging {
+  opacity: 0.5;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
 
