@@ -18,6 +18,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (e.target && e.target.classList.contains("add-task-btn")) {
         idListaSeleccionada = e.target.value;
         document.getElementById("modalCrearTarea").classList.remove("hidden");
+
+        // Llenar el <select id="status"> con las listas del tablero
+        const selectStatus = document.getElementById("status");
+        selectStatus.innerHTML = ""; // Limpiar opciones anteriores
+
+        listas.forEach(lista => {
+          const option = document.createElement("option");
+          option.value = lista.id;
+          option.textContent = lista.nombre;
+          if (lista.id === idListaSeleccionada) {
+            option.selected = true;
+          }
+          selectStatus.appendChild(option);
+        });
       }
     });
 
@@ -35,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         descripcion: document.getElementById("descripcion").value,
         prioridad: document.getElementById("prioridad").value,
         fecha_limite: new Date().toISOString().split('T')[0],
-        id_lista: idListaSeleccionada,
+        id_lista: document.getElementById("status").value
       };
 
       if (!idListaSeleccionada) {

@@ -43,23 +43,44 @@
 
   <script src="admin_tareas.js"></script>
 
-  <!-- Modal para crear tarea -->
-  <div id="modalCrearTarea" class="modal hidden">
-    <div class="modal-content">
-      <span id="cerrarModal" class="close-button">&times;</span>
-      <h2>Crear Nueva Tarea</h2>
-      <form id="formCrearTarea">
-        <input type="text" id="titulo" placeholder="Título de la tarea" required />
-        <textarea id="descripcion" placeholder="Descripción (opcional)"></textarea>
-        <select id="prioridad" required>
-          <option value="Baja">Baja</option>
-          <option value="Media">Media</option>
-          <option value="Alta">Alta</option>
-        </select>
-        <button type="submit">Crear Tarea</button>
-      </form>
-    </div>
+<!-- Modal para crear tarea -->
+<div id="modalCrearTarea" class="modal hidden">
+  <div class="modal-content styled-modal">
+    <span id="cerrarModal" class="close-button">&times;</span>
+    <h2 class="modal-title">Create New Task</h2>
+
+    <form id="formCrearTarea" class="form-tarea">
+      <label for="titulo">Task Title</label>
+      <input type="text" id="titulo" placeholder="Enter task title..." required class="input-tarea" />
+
+      <label for="descripcion">Description</label>
+      <textarea id="descripcion" placeholder="Enter task description..." class="textarea-tarea"></textarea>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select id="status" required class="select-tarea">
+            <!-- JS llenará las listas aquí dinámicamente -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="prioridad">Priority</label>
+          <select id="prioridad" required class="select-tarea">
+            <option value="Baja">Low</option>
+            <option value="Media">Medium</option>
+            <option value="Alta">High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-primary">Create Task</button>
+        <button type="button" class="btn btn-secondary" id="cerrarModalCancelar">Cancel</button>
+      </div>
+    </form>
   </div>
+</div>
 
   <!-- Modal para editar tarea -->
   <div id="modalEditarTarea" class="modal hidden">
