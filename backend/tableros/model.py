@@ -7,3 +7,7 @@ class Tablero(BaseModel):
     descripcion: str
     id_usuario: str
     creado_en: datetime
+    
+class TableroCrear(BaseModel):
+    nombre: str
+    descripcion: str
