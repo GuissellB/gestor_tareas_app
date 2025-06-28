@@ -7,9 +7,10 @@
 .kanban-board {
   display: flex;
   gap: 20px;
-  justify-content: center;
   align-items: flex-start; 
   padding: 2rem;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .kanban-column {
@@ -17,7 +18,8 @@
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   padding: 1rem;
-  width: 300px;
+  min-width: 300px;
+  max-width: 330px;
   min-height: 200px;
   display: flex;
   flex-direction: column;
@@ -124,6 +126,11 @@
   color: #555;
   margin: 0;
   line-height: 1.4;
+  word-wrap: break-word;         /* Corta las palabras largas si es necesario */
+  overflow-wrap: break-word;     /* Compatibilidad extra */
+  white-space: normal;           /* Permite que el texto se acomode en varias líneas */
+  max-width: 100%;               /* Limita el ancho al 100% del contenedor padre */
+  font-size: 0.95rem; 
 }
 
 .etiqueta {
