@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           formEditar.editarDescripcion.value = tarea.descripcion || "";
           formEditar.editarPrioridad.value = tarea.prioridad;
 
-          // llenar el select de listas en el modal de editar
           const selectStatus = document.getElementById("editarStatus");
           selectStatus.innerHTML = "";
           listas.forEach(lista => {
@@ -127,7 +126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         titulo: formEditar.editarTitulo.value,
         descripcion: formEditar.editarDescripcion.value,
         prioridad: formEditar.editarPrioridad.value,
-        posicion: 1  // podrías calcular aquí si quieres
+        posicion: 1
       };
 
       try {
@@ -166,28 +165,38 @@ document.addEventListener("DOMContentLoaded", async () => {
       board.addEventListener("dragover", e => e.preventDefault());
     });
 
+    // 🔥 drop corregido para enviar todos los datos
     document.addEventListener("drop", async (e) => {
       if (e.target.closest(".kanban-column")) {
         const column = e.target.closest(".kanban-column");
         const idListaNueva = column.querySelector(".add-task-btn").value;
         const idTarea = e.dataTransfer.getData("text/plain");
 
-        // Calcular la nueva posición como la cantidad actual de tareas + 1
         const tareasEnColumna = column.querySelectorAll(".tarea");
         const nuevaPosicion = tareasEnColumna.length + 1;
 
         try {
+          // obtener datos actuales
+          const resTarea = await fetch(`${API_BASE_URL}/tareas/${idTarea}`);
+          if (!resTarea.ok) throw new Error("No se pudo obtener la tarea");
+          const tareaActual = await resTarea.json();
+
+          const payload = {
+            id_lista: idListaNueva,
+            titulo: tareaActual.titulo,
+            descripcion: tareaActual.descripcion,
+            prioridad: tareaActual.prioridad,
+            posicion: nuevaPosicion
+          };
+
           const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${idTarea}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              id_lista: idListaNueva,
-              posicion: nuevaPosicion
-            })
+            body: JSON.stringify(payload)
           });
+
           if (!res.ok) throw new Error("No se pudo mover la tarea");
           console.log(`Tarea ${idTarea} movida a lista ${idListaNueva} en posición ${nuevaPosicion}`);
-
           location.reload();
         } catch (error) {
           console.error(error);
@@ -307,4 +316,5 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
+
 
