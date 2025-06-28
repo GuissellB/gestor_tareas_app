@@ -99,7 +99,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           formEditar.editarDescripcion.value = tarea.descripcion || "";
           formEditar.editarPrioridad.value = tarea.prioridad;
 
-          // llenar el select de listas en el modal de editar
           const selectStatus = document.getElementById("editarStatus");
           selectStatus.innerHTML = "";
           listas.forEach(lista => {
@@ -122,8 +121,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       if (!tareaEditandoId) return;
 
-      // para demo fijo en 1, en tu real puedes buscar posicion real
-      const posicion = 1;
+      const tareasDestino = await getTareasPorLista(formEditar.editarStatus.value);
+      const posicion = tareasDestino.length + 1;
 
       const datosActualizados = {
         id_lista: formEditar.editarStatus.value,
@@ -148,6 +147,45 @@ document.addEventListener("DOMContentLoaded", async () => {
       } catch (error) {
         alert("❌ Error al actualizar la tarea");
         console.error(error);
+      }
+    });
+
+    // ============ DRAG & DROP ============
+    document.addEventListener("dragstart", (e) => {
+      if (e.target.classList.contains("tarea")) {
+        e.dataTransfer.setData("text/plain", e.target.getAttribute("data-id"));
+      }
+    });
+
+    document.querySelectorAll(".kanban-board").forEach(board => {
+      board.addEventListener("dragover", e => e.preventDefault());
+    });
+
+    document.getElementById("listas-container").addEventListener("drop", async (e) => {
+      e.preventDefault();
+      const tareaId = e.dataTransfer.getData("text/plain");
+      const targetColumn = e.target.closest(".kanban-column");
+      if (!targetColumn) return;
+
+      const idLista = targetColumn.querySelector(".add-task-btn").value;
+      const tareasDestino = await getTareasPorLista(idLista);
+
+      const datosActualizados = {
+        id_lista: idLista,
+        posicion: tareasDestino.length + 1
+      };
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${tareaId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datosActualizados)
+        });
+        if (!res.ok) throw new Error("Error al mover tarea");
+        location.reload();
+      } catch (error) {
+        console.error(error);
+        alert("❌ Error al mover la tarea");
       }
     });
 
@@ -222,7 +260,7 @@ async function renderListasKanban(listas) {
       tareasHTML = `
         <div class="task-list">
           ${tareas.map(t => `
-            <div class="tarea">
+            <div class="tarea" draggable="true" data-id="${t.id}">
               <div class="titulo-tarea">
                 <span>${t.titulo}</span>
                 <div class="acciones-tarea">
@@ -234,9 +272,6 @@ async function renderListasKanban(listas) {
                 <span class="etiqueta ${t.prioridad.toLowerCase()}">${t.prioridad}</span>
               </div>
               <p class="descripcion-tarea">${t.descripcion}</p>
-              <select class="mover-tarea">
-                ${listas.map(l => `<option value="${l.id}" ${l.id === lista.id ? 'selected' : ''}>${l.nombre}</option>`).join("")}
-              </select>
             </div>
           `).join("")}
         </div>
@@ -265,4 +300,3 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
-
