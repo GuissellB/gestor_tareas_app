@@ -369,3 +369,18 @@
 .btn-secondary:hover {
   background-color: #ddd;
 }
+
+/* Estilos para inputs, textarea y select dentro del formulario de editar tarea */
+#formEditarTarea input,
+#formEditarTarea textarea,
+#formEditarTarea select {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
