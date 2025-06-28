@@ -99,6 +99,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           formEditar.editarDescripcion.value = tarea.descripcion || "";
           formEditar.editarPrioridad.value = tarea.prioridad;
 
+          // llenar el select de listas en el modal de editar
+          const selectStatus = document.getElementById("editarStatus");
+          selectStatus.innerHTML = "";
+          listas.forEach(lista => {
+            const option = document.createElement("option");
+            option.value = lista.id;
+            option.textContent = lista.nombre;
+            if (lista.id === tarea.id_lista) option.selected = true;
+            selectStatus.appendChild(option);
+          });
+
           modalEditar.classList.remove("hidden");
         } catch (error) {
           alert("Error al cargar datos de la tarea");
@@ -111,14 +122,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       if (!tareaEditandoId) return;
 
+      // para demo fijo en 1, en tu real puedes buscar posicion real
+      const posicion = 1;
+
       const datosActualizados = {
+        id_lista: formEditar.editarStatus.value,
         titulo: formEditar.editarTitulo.value,
         descripcion: formEditar.editarDescripcion.value,
         prioridad: formEditar.editarPrioridad.value,
+        posicion: posicion
       };
 
       try {
-        const res = await fetch(`${API_BASE_URL}/tareas/${tareaEditandoId}`, {
+        const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${tareaEditandoId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(datosActualizados),
@@ -249,3 +265,4 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
+
