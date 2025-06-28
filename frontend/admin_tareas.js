@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           formEditar.editarDescripcion.value = tarea.descripcion || "";
           formEditar.editarPrioridad.value = tarea.prioridad;
 
+          // llenar el select de listas en el modal de editar
           const selectStatus = document.getElementById("editarStatus");
           selectStatus.innerHTML = "";
           listas.forEach(lista => {
@@ -121,15 +122,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       if (!tareaEditandoId) return;
 
-      const tareasDestino = await getTareasPorLista(formEditar.editarStatus.value);
-      const posicion = tareasDestino.length + 1;
-
       const datosActualizados = {
         id_lista: formEditar.editarStatus.value,
         titulo: formEditar.editarTitulo.value,
         descripcion: formEditar.editarDescripcion.value,
         prioridad: formEditar.editarPrioridad.value,
-        posicion: posicion
+        posicion: 1  // podrías calcular aquí si quieres
       };
 
       try {
@@ -150,10 +148,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-    // ============ DRAG & DROP ============
+    // ============ DRAG & DROP PARA MOVER ENTRE COLUMNAS ============
     document.addEventListener("dragstart", (e) => {
       if (e.target.classList.contains("tarea")) {
         e.dataTransfer.setData("text/plain", e.target.getAttribute("data-id"));
+        e.target.classList.add("dragging");
+      }
+    });
+
+    document.addEventListener("dragend", (e) => {
+      if (e.target.classList.contains("tarea")) {
+        e.target.classList.remove("dragging");
       }
     });
 
@@ -161,31 +166,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       board.addEventListener("dragover", e => e.preventDefault());
     });
 
-    document.getElementById("listas-container").addEventListener("drop", async (e) => {
-      e.preventDefault();
-      const tareaId = e.dataTransfer.getData("text/plain");
-      const targetColumn = e.target.closest(".kanban-column");
-      if (!targetColumn) return;
+    document.addEventListener("drop", async (e) => {
+      if (e.target.closest(".kanban-column")) {
+        const column = e.target.closest(".kanban-column");
+        const idListaNueva = column.querySelector(".add-task-btn").value;
+        const idTarea = e.dataTransfer.getData("text/plain");
 
-      const idLista = targetColumn.querySelector(".add-task-btn").value;
-      const tareasDestino = await getTareasPorLista(idLista);
-
-      const datosActualizados = {
-        id_lista: idLista,
-        posicion: tareasDestino.length + 1
-      };
-
-      try {
-        const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${tareaId}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(datosActualizados)
-        });
-        if (!res.ok) throw new Error("Error al mover tarea");
-        location.reload();
-      } catch (error) {
-        console.error(error);
-        alert("❌ Error al mover la tarea");
+        try {
+          const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${idTarea}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_lista: idListaNueva,
+              posicion: 1  // podrías recalcular
+            })
+          });
+          if (!res.ok) throw new Error("No se pudo mover la tarea");
+          console.log(`Tarea ${idTarea} movida a lista ${idListaNueva}`);
+          location.reload();
+        } catch (error) {
+          console.error(error);
+          alert("❌ No se pudo mover la tarea");
+        }
       }
     });
 
