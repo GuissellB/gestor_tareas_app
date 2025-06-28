@@ -7,9 +7,10 @@
 .kanban-board {
   display: flex;
   gap: 20px;
-  justify-content: center;
   align-items: flex-start; 
   padding: 2rem;
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 
 .kanban-column {
