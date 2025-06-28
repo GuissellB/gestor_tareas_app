@@ -4,7 +4,7 @@ from .model import Tarea
 
 router = APIRouter(prefix="/tareas", tags=["Tareas"])
 
-#Creacion de tareas
+# Creacion de tareas
 @router.post("/crear")
 def guardar_tarea(tarea: Tarea):
     try:
@@ -36,14 +36,14 @@ def guardar_tarea(tarea: Tarea):
         if 'db' in locals():
             db.close()
 
-#GET de tareas por id de Lista
+# GET de tareas por id de Lista
 @router.get("/lista/{id_lista}", response_model=list[Tarea])
 def obtener_tareas_por_lista(id_lista: str):
     try:
         db = conectar_db()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM tareas WHERE id_lista = %s", (id_lista,))
-        tareas = cursor.fetchall()   
+        tareas = cursor.fetchall()
 
         return tareas
 
@@ -55,8 +55,8 @@ def obtener_tareas_por_lista(id_lista: str):
             cursor.close()
         if 'db' in locals():
             db.close()
-            
-#Eliminar tareas
+
+# Eliminar tareas
 @router.delete("/eliminar/{id_tarea}")
 def eliminar_tarea(id_tarea: str):
     try:
@@ -81,3 +81,45 @@ def eliminar_tarea(id_tarea: str):
             cursor.close()
         if 'db' in locals():
             db.close()
+
+# Modificar tarea
+@router.put("/actualizar/{id_tarea}")
+def actualizar_tarea(id_tarea: str, tarea: Tarea):
+    try:
+        db = conectar_db()
+        cursor = db.cursor()
+
+        sql = """
+        UPDATE tareas
+        SET id_lista = %s,
+            titulo = %s,
+            descripcion = %s,
+            prioridad = %s,
+            posicion = %s
+        WHERE id = %s
+        """
+        cursor.execute(sql, (
+            tarea.id_lista,
+            tarea.titulo,
+            tarea.descripcion,
+            tarea.prioridad,
+            tarea.posicion,
+            id_tarea
+        ))
+        db.commit()
+
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="Tarea no encontrada para actualizar")
+
+        return {"mensaje": "Tarea actualizada con éxito"}
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'db' in locals():
+            db.close()
+
