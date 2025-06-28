@@ -84,24 +84,38 @@
 
   <!-- Modal para editar tarea -->
   <div id="modalEditarTarea" class="modal hidden">
-    <div class="modal-content">
+    <div class="modal-content styled-modal">
       <span id="cerrarModalEditar" class="close-button">&times;</span>
       <h2>Editar Tarea</h2>
-      <form id="formEditarTarea">
-        <input type="text" id="editarTitulo" placeholder="Título" required />
-        <textarea id="editarDescripcion" placeholder="Descripción"></textarea>
+      <form id="formEditarTarea" class="form-tarea">
+        <label for="editarTitulo">Task Title</label>
+        <input type="text" id="editarTitulo" placeholder="Título" required class="input-tarea" />
 
-        <select id="editarStatus" required>
-          <!-- se llenará dinámicamente con las listas (status) -->
-        </select>
+        <label for="editarDescripcion">Description</label>
+        <textarea id="editarDescripcion" placeholder="Descripción" class="textarea-tarea"></textarea>
 
-        <select id="editarPrioridad" required>
-          <option value="Baja">Baja</option>
-          <option value="Media">Media</option>
-          <option value="Alta">Alta</option>
-        </select>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editarStatus">Status</label>
+            <select id="editarStatus" required class="select-tarea">
+              <!-- se llenará dinámicamente con las listas (status) -->
+            </select>
+          </div>
 
-        <button type="submit">Guardar Cambios</button>
+          <div class="form-group">
+            <label for="editarPrioridad">Priority</label>
+            <select id="editarPrioridad" required class="select-tarea">
+              <option value="Baja">Baja</option>
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-buttons">
+          <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" id="cerrarModalEditarCancelar">Cancel</button>
+        </div>
       </form>
     </div>
   </div>
@@ -109,3 +123,4 @@
 </body>
 
 </html>
+
