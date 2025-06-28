@@ -172,17 +172,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         const idListaNueva = column.querySelector(".add-task-btn").value;
         const idTarea = e.dataTransfer.getData("text/plain");
 
+        // Calcular la nueva posición como la cantidad actual de tareas + 1
+        const tareasEnColumna = column.querySelectorAll(".tarea");
+        const nuevaPosicion = tareasEnColumna.length + 1;
+
         try {
           const res = await fetch(`${API_BASE_URL}/tareas/actualizar/${idTarea}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               id_lista: idListaNueva,
-              posicion: 1  // podrías recalcular
+              posicion: nuevaPosicion
             })
           });
           if (!res.ok) throw new Error("No se pudo mover la tarea");
-          console.log(`Tarea ${idTarea} movida a lista ${idListaNueva}`);
+          console.log(`Tarea ${idTarea} movida a lista ${idListaNueva} en posición ${nuevaPosicion}`);
+
           location.reload();
         } catch (error) {
           console.error(error);
@@ -302,3 +307,4 @@ function getColorDot(nombreLista) {
   if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
   return "dot-blue";
 }
+
