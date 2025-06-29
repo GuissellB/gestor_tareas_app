@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         if (!res.ok) throw new Error("Error al crear tarea");
-        alert("✅ Tarea creada");
+        alert("✅ Tarea creada exitosamente");
         document.getElementById("modalCrearTarea").classList.add("hidden");
         location.reload();
       } catch (error) {
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (!res.ok) throw new Error("Error al actualizar tarea");
 
-        alert("✅ Tarea actualizada");
+        alert("✅ Tarea actualizada exitosamente");
         modalEditar.classList.add("hidden");
         location.reload();
       } catch (error) {
@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       board.addEventListener("dragover", e => e.preventDefault());
     });
 
-    // 🔥 drop corregido para enviar todos los datos
+    // drop corregido para enviar todos los datos
     document.addEventListener("drop", async (e) => {
       if (e.target.closest(".kanban-column")) {
         const column = e.target.closest(".kanban-column");
@@ -255,7 +255,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
-
   } catch (error) {
     console.error("Error cargando el tablero o listas:", error);
   }
@@ -276,7 +275,7 @@ document.addEventListener("click", async function (e) {
 
       if (!res.ok) throw new Error("Error al eliminar la tarea");
 
-      alert("✅ Tarea eliminada con éxito");
+      alert("✅ Tarea eliminada exitosamente");
       location.reload();
     } catch (error) {
       console.error(error);
@@ -311,11 +310,11 @@ document.addEventListener("click", async function (e) {
 
       if (!res.ok) throw new Error("Error al eliminar la lista");
 
-      alert("Lista eliminada");
+      alert("✅ Lista eliminada exitosamente");
       location.reload();
     } catch (error) {
       console.error(error);
-      alert("No se pudo eliminar la lista");
+      alert("❌ No se pudo eliminar la lista");
     }
   }
 
@@ -418,6 +417,7 @@ async function renderListasKanban(listas) {
 `;
   container.appendChild(nuevaListaDiv);
 }
+
 
 
 
