@@ -39,6 +39,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("modalCrearTarea").classList.add("hidden");
     });
 
+    // Cerrar modal al hacer clic en el botón "Cancelar"
+    const btnCancelar = document.getElementById("cerrarModalCancelar");
+    if (btnCancelar) {
+      btnCancelar.addEventListener("click", function () {
+        document.getElementById("modalCrearTarea").classList.add("hidden");
+      });
+    }
+
     document.getElementById("formCrearTarea").addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -216,7 +224,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("modalCrearLista").classList.add("hidden");
       }
 
-       if (e.target.id === "cerrarModalCrearLista") {
+      if (e.target.id === "cerrarModalCrearLista") {
         document.getElementById("modalCrearLista").classList.add("hidden");
       }
     });
