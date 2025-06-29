@@ -205,6 +205,57 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
 
+    // ============ CREAR NUEVA LISTA ============
+
+    document.addEventListener("click", function (e) {
+      if (e.target.closest(".btn-nueva-lista")) {
+        document.getElementById("modalCrearLista").classList.remove("hidden");
+      }
+
+      if (e.target.id === "cancelarCrearLista") {
+        document.getElementById("modalCrearLista").classList.add("hidden");
+      }
+
+       if (e.target.id === "cerrarModalCrearLista") {
+        document.getElementById("modalCrearLista").classList.add("hidden");
+      }
+    });
+
+    document.getElementById("crearListaBtn").addEventListener("click", async () => {
+      const nombreLista = document.getElementById("nombreLista").value.trim();
+      if (!nombreLista) {
+        alert("Por favor ingresa un nombre para la lista.");
+        return;
+      }
+
+      try {
+        const listasActuales = await getListas(tableroId);
+
+        const nuevaLista = {
+          id_tablero: tableroId,
+          nombre: nombreLista,
+          posicion: listasActuales.length + 1
+        };
+
+        const res = await fetch(`${API_BASE_URL}/listas/crear`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevaLista)
+        });
+
+        if (!res.ok) throw new Error("No se pudo crear la lista");
+
+        alert("✅ Lista creada exitosamente");
+        document.getElementById("modalCrearLista").classList.add("hidden");
+        location.reload();
+
+      } catch (error) {
+        console.error(error);
+        alert("❌ Error al crear la lista");
+      }
+    });
+
+
   } catch (error) {
     console.error("Error cargando el tablero o listas:", error);
   }
@@ -234,6 +285,47 @@ document.addEventListener("click", async function (e) {
   }
 });
 
+//Opciones de tareas
+document.addEventListener("click", async function (e) {
+  // Mostrar/ocultar el menú de una lista
+  if (e.target.closest(".btn-menu-lista")) {
+    const idLista = e.target.closest(".btn-menu-lista").dataset.id;
+    const menu = document.getElementById(`menu-${idLista}`);
+
+    // Cerrar otros menús abiertos
+    document.querySelectorAll(".menu-opciones").forEach(m => m.classList.add("hidden"));
+    menu.classList.toggle("hidden");
+    return;
+  }
+
+  // Eliminar una lista
+  if (e.target.closest(".btn-eliminar-lista")) {
+    const idLista = e.target.closest(".btn-eliminar-lista").dataset.id;
+    const confirmar = confirm("¿Estás seguro de que deseas eliminar esta lista?");
+    if (!confirmar) return;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/listas/eliminar/${idLista}`, {
+        method: "DELETE"
+      });
+
+      if (!res.ok) throw new Error("Error al eliminar la lista");
+
+      alert("Lista eliminada");
+      location.reload();
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar la lista");
+    }
+  }
+
+  // Ocultar menú si se hace clic fuera de él
+  if (!e.target.closest(".lista-menu")) {
+    document.querySelectorAll(".menu-opciones").forEach(m => m.classList.add("hidden"));
+  }
+});
+
+
 async function getTablero(id) {
   const res = await fetch(`${API_BASE_URL}/tableros/${id}`);
   if (!res.ok) throw new Error("No se pudo obtener el tablero");
@@ -256,65 +348,76 @@ async function renderListasKanban(listas) {
   const container = document.getElementById("listas-container");
   container.innerHTML = "";
 
-  listas.sort((a, b) => a.posicion - b.posicion);
+  // Si hay listas, las renderizamos
+  if (listas.length > 0) {
+    listas.sort((a, b) => a.posicion - b.posicion);
 
-  for (const lista of listas) {
-    const listaHTML = document.createElement("div");
-    listaHTML.className = "kanban-column";
+    for (const lista of listas) {
+      const listaHTML = document.createElement("div");
+      listaHTML.className = "kanban-column";
 
-    const tareas = await getTareasPorLista(lista.id);
+      const tareas = await getTareasPorLista(lista.id);
 
-    let tareasHTML = "";
+      let tareasHTML = "";
 
-    if (tareas.length === 0) {
-      tareasHTML = `
-        <div class="task-list empty">
-          <p class="empty-message">Aún no hay tareas<br><small>Agrega tu primera tarea para comenzar</small></p>
-        </div>
-      `;
-    } else {
-      tareasHTML = `
-        <div class="task-list">
-          ${tareas.map(t => `
-            <div class="tarea" draggable="true" data-id="${t.id}">
-              <div class="titulo-tarea">
-                <span>${t.titulo}</span>
-                <div class="acciones-tarea">
-                  <button class="btn-editar-tarea" data-id="${t.id}" title="Editar"><i class="fas fa-pen"></i></button>
-                  <button class="btn-eliminar-tarea" data-id="${t.id}" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+      if (tareas.length === 0) {
+        tareasHTML = `
+          <div class="task-list empty">
+            <p class="empty-message">Aún no hay tareas<br><small>Agrega tu primera tarea para comenzar</small></p>
+          </div>
+        `;
+      } else {
+        tareasHTML = `
+          <div class="task-list">
+            ${tareas.map(t => `
+              <div class="tarea" draggable="true" data-id="${t.id}">
+                <div class="titulo-tarea">
+                  <span>${t.titulo}</span>
+                  <div class="acciones-tarea">
+                    <button class="btn-editar-tarea" data-id="${t.id}" title="Editar"><i class="fas fa-pen"></i></button>
+                    <button class="btn-eliminar-tarea" data-id="${t.id}" title="Eliminar"><i class="fas fa-trash-alt"></i></button>
+                  </div>
                 </div>
+                <div class="etiquetas">
+                  <span class="etiqueta ${t.prioridad.toLowerCase()}">${t.prioridad}</span>
+                </div>
+                <p class="descripcion-tarea">${t.descripcion}</p>
               </div>
-              <div class="etiquetas">
-                <span class="etiqueta ${t.prioridad.toLowerCase()}">${t.prioridad}</span>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      listaHTML.innerHTML = `
+        <div class="kanban-column-header">
+          <div class="header-dot">
+            <div class="status-dot ${lista.nombre}"></div>
+            <h3>${lista.nombre}</h3>
+            <div class="lista-menu">
+              <button class="btn-menu-lista" data-id="${lista.id}"><i class="fas fa-ellipsis-v"></i></button>
+              <div class="menu-opciones hidden" id="menu-${lista.id}">
+                <button class="btn-eliminar-lista" data-id="${lista.id}">Eliminar</button>
               </div>
-              <p class="descripcion-tarea">${t.descripcion}</p>
             </div>
-          `).join("")}
+          </div>
+          <label class="task-count">${tareas.length}</label>
         </div>
+        <button class="add-task-btn" value="${lista.id}">+ Agregar tarea</button>
+        ${tareasHTML}
       `;
+
+      container.appendChild(listaHTML);
     }
-
-    listaHTML.innerHTML = `
-      <div class="kanban-column-header">
-        <div class="header-dot">
-          <div class="status-dot ${getColorDot(lista.nombre)}"></div>
-          <h3>${lista.nombre}</h3>
-        </div>
-        <label class="task-count">${tareas.length}</label>  
-      </div>
-      <button class="add-task-btn" value="${lista.id}">+ Add Task</button>
-      ${tareasHTML}
-    `;
-
-    container.appendChild(listaHTML);
   }
+
+  const nuevaListaDiv = document.createElement("div");
+  nuevaListaDiv.innerHTML = `
+  <button class="btn-nueva-lista">
+    <i class="fas fa-plus"></i> Añadir otra lista
+  </button>
+`;
+  container.appendChild(nuevaListaDiv);
 }
 
-function getColorDot(nombreLista) {
-  const nombre = nombreLista.toLowerCase();
-  if (nombre.includes("progreso")) return "dot-yellow";
-  if (nombre.includes("hecho") || nombre.includes("done")) return "dot-green";
-  return "dot-blue";
-}
 
 

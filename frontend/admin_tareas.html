@@ -41,8 +41,6 @@
     Privacy | Terms & Conditions | ©2025 TaskBoard
   </footer>
 
-  <script src="admin_tareas.js"></script>
-
   <!-- Modal para crear tarea -->
   <div id="modalCrearTarea" class="modal hidden">
     <div class="modal-content styled-modal">
@@ -119,7 +117,21 @@
       </form>
     </div>
   </div>
-
+  
+  <!-- Modal Crear Lista -->
+  <div id="modalCrearLista" class="modal hidden">
+    <div class="modal-content styled-modal">
+      <span id="cerrarModalCrearLista" class="close-button">&times;</span>
+      <h2>Crear nueva lista</h2>
+      <input type="text" id="nombreLista" placeholder="Nombre de la lista" />
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="crearListaBtn">Crear</button>
+        <button class="btn btn-secondary"id="cancelarCrearLista">Cancelar</button>
+      </div>
+    </div>
+  </div>
+ 
+  <script src="admin_tareas.js"></script>
 </body>
 
 </html>

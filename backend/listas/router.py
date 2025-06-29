@@ -14,9 +14,6 @@ def obtener_listas_por_tablero(id_tablero: str):
         cursor.execute("SELECT * FROM listas WHERE id_tablero = %s", (id_tablero,))
         listas = cursor.fetchall()
 
-        if not listas:
-            raise HTTPException(status_code=404, detail="No se encontraron listas para ese tablero")
-
         return listas
 
     except Exception as e:
@@ -28,25 +25,43 @@ def obtener_listas_por_tablero(id_tablero: str):
         if 'db' in locals():
             db.close()
 
-# Crear una nueva lista
 @router.post("/crear")
-def guardar_lista(lista: Lista):
+def crear_lista(lista: Lista):
+    db = conectar_db()
+    cursor = db.cursor()
+
+    # Si la posición no viene definida, buscamos la máxima actual
+    if lista.posicion is None:
+        cursor.execute(
+            "SELECT MAX(posicion) FROM listas WHERE id_tablero = %s", 
+            (lista.id_tablero,)
+        )
+        max_pos = cursor.fetchone()[0]
+        nueva_posicion = (max_pos or 0) + 1
+    else:
+        nueva_posicion = lista.posicion
+
+    sql = """
+        INSERT INTO listas (id, id_tablero, nombre, posicion)
+        VALUES (UUID(), %s, %s, %s)
+    """
+    cursor.execute(sql, (lista.id_tablero, lista.nombre, nueva_posicion))
+    db.commit()
+    cursor.close()
+    db.close()
+    return {"message": "Lista creada correctamente"}
+
+# Elimina una lista             
+@router.delete("/eliminar/{id_lista}")
+def eliminar_lista(id_lista: str):
     try:
         db = conectar_db()
         cursor = db.cursor()
 
-        sql = """
-        INSERT INTO listas (id, id_tablero, nombre, posicion)
-        VALUES (UUID(), %s, %s, %s)
-        """
-        cursor.execute(sql, (
-            lista.id_tablero,
-            lista.nombre,
-            lista.posicion
-        ))
+        cursor.execute("DELETE FROM listas WHERE id = %s", (id_lista,))
         db.commit()
 
-        return {"mensaje": "Lista guardada con éxito"}
+        return {"mensaje": "Lista eliminada con éxito"}
 
     except Exception as e:
         db.rollback()
