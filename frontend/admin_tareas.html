@@ -14,7 +14,7 @@
   <header class="gradient-header">
     <div class="nav-container">
       <div class="branding">
-        <h1 class="logo">TaskBoard <span class="icon">📁</span></h1>
+        <h1 class="logo">Tablero de Tareas <span class="icon">📁</span></h1>
         <p class="slogan">Convierte tus ideas en acción.</p>
       </div>
       <nav class="main-nav">
@@ -38,43 +38,43 @@
   </main>
 
   <footer class="gradient-footer">
-    Privacy | Terms & Conditions | ©2025 TaskBoard
+    Privacidad | Términos y Condiciones | ©2025 Tablero de Tareas
   </footer>
 
   <!-- Modal para crear tarea -->
   <div id="modalCrearTarea" class="modal hidden">
     <div class="modal-content styled-modal">
       <span id="cerrarModal" class="close-button">&times;</span>
-      <h2 class="modal-title">Create New Task</h2>
+      <h2 class="modal-title">Crear Nueva Tarea</h2>
 
       <form id="formCrearTarea" class="form-tarea">
-        <label for="titulo">Task Title</label>
-        <input type="text" id="titulo" placeholder="Enter task title..." required class="input-tarea" />
+        <label for="titulo">Título de la Tarea</label>
+        <input type="text" id="titulo" placeholder="Ingresa el título de la tarea..." required class="input-tarea" />
 
-        <label for="descripcion">Description</label>
-        <textarea id="descripcion" placeholder="Enter task description..." class="textarea-tarea"></textarea>
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" placeholder="Ingresa la descripción de la tarea..." class="textarea-tarea"></textarea>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="status">Status</label>
+            <label for="status">Estado</label>
             <select id="status" required class="select-tarea">
               <!-- JS llenará las listas aquí dinámicamente -->
             </select>
           </div>
 
           <div class="form-group">
-            <label for="prioridad">Priority</label>
+            <label for="prioridad">Prioridad</label>
             <select id="prioridad" required class="select-tarea">
-              <option value="Baja">Low</option>
-              <option value="Media">Medium</option>
-              <option value="Alta">High</option>
+              <option value="Baja">Baja</option>
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
             </select>
           </div>
         </div>
 
         <div class="form-buttons">
-          <button type="submit" class="btn btn-primary">Create Task</button>
-          <button type="button" class="btn btn-secondary" id="cerrarModalCancelar">Cancel</button>
+          <button type="submit" class="btn btn-primary">Crear Tarea</button>
+          <button type="button" class="btn btn-secondary" id="cerrarModalCancelar">Cancelar</button>
         </div>
       </form>
     </div>
@@ -86,22 +86,22 @@
       <span id="cerrarModalEditar" class="close-button">&times;</span>
       <h2>Editar Tarea</h2>
       <form id="formEditarTarea" class="form-tarea">
-        <label for="editarTitulo">Task Title</label>
+        <label for="editarTitulo">Título de la Tarea</label>
         <input type="text" id="editarTitulo" placeholder="Título" required class="input-tarea" />
 
-        <label for="editarDescripcion">Description</label>
+        <label for="editarDescripcion">Descripción</label>
         <textarea id="editarDescripcion" placeholder="Descripción" class="textarea-tarea"></textarea>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="editarStatus">Status</label>
+            <label for="editarStatus">Estado</label>
             <select id="editarStatus" required class="select-tarea">
               <!-- se llenará dinámicamente con las listas (status) -->
             </select>
           </div>
 
           <div class="form-group">
-            <label for="editarPrioridad">Priority</label>
+            <label for="editarPrioridad">Prioridad</label>
             <select id="editarPrioridad" required class="select-tarea">
               <option value="Baja">Baja</option>
               <option value="Media">Media</option>
@@ -112,7 +112,7 @@
 
         <div class="form-buttons">
           <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-          <button type="button" class="btn btn-secondary" id="cerrarModalEditarCancelar">Cancel</button>
+          <button type="button" class="btn btn-secondary" id="cerrarModalEditarCancelar">Cancelar</button>
         </div>
       </form>
     </div>
@@ -135,4 +135,5 @@
 </body>
 
 </html>
+
 
