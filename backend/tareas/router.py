@@ -123,3 +123,27 @@ def actualizar_tarea(id_tarea: str, tarea: Tarea):
         if 'db' in locals():
             db.close()
 
+# Obtener una tarea por su ID
+@router.get("/{id_tarea}", response_model=Tarea)
+def obtener_tarea_por_id(id_tarea: str):
+    try:
+        db = conectar_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM tareas WHERE id = %s", (id_tarea,))
+        tarea = cursor.fetchone()
+
+        if not tarea:
+            raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+        return tarea
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'db' in locals():
+            db.close()
+
+
