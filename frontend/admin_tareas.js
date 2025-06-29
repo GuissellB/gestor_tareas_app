@@ -413,7 +413,7 @@ async function renderListasKanban(listas) {
   const nuevaListaDiv = document.createElement("div");
   nuevaListaDiv.innerHTML = `
   <button class="btn-nueva-lista">
-    <i class="fas fa-plus"></i> Añadir otra lista
+    <i class="fas fa-plus"></i> Añadir lista
   </button>
 `;
   container.appendChild(nuevaListaDiv);
