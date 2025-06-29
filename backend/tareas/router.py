@@ -4,7 +4,7 @@ from .model import Tarea
 
 router = APIRouter(prefix="/tareas", tags=["Tareas"])
 
-# Creacion de tareas
+# Creacion de tarea
 @router.post("/crear")
 def guardar_tarea(tarea: Tarea):
     try:
