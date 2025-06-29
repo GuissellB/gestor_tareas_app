@@ -154,4 +154,7 @@ Si vas a colaborar:
 
 ## 🧑‍💻 Autor
 
-- Guissell Betancur y equipo
+- Guissell Betancur
+- Deykel Bernard
+- Carolina Salas
+- Anyelin Arias
