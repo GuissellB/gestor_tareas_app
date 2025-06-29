@@ -27,3 +27,33 @@ def obtener_listas_por_tablero(id_tablero: str):
             cursor.close()
         if 'db' in locals():
             db.close()
+
+# Crear una nueva lista
+@router.post("/crear")
+def guardar_lista(lista: Lista):
+    try:
+        db = conectar_db()
+        cursor = db.cursor()
+
+        sql = """
+        INSERT INTO listas (id, id_tablero, nombre, posicion)
+        VALUES (UUID(), %s, %s, %s)
+        """
+        cursor.execute(sql, (
+            lista.id_tablero,
+            lista.nombre,
+            lista.posicion
+        ))
+        db.commit()
+
+        return {"mensaje": "Lista guardada con éxito"}
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'db' in locals():
+            db.close()
